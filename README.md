@@ -1,13 +1,103 @@
-# Vue3 Element Admin Template
+# RDMS 辐射设备管理系统 (Vue3 版本)
 
-## Introduction
+这是基于 vue3-element-admin 模板创建的辐射设备管理系统前端项目。
+
+## 技术栈
+
+- Vue 3.5
+- TypeScript
+- Element Plus 2.10
 
 This template is built with the latest Vue 3 framework and the Element Plus UI library. It uses Vite as the build tool, Pinia for state management, Vue Router for routing, Mock.js for data simulation, and integrates TypeScript.
 The functionality is ported from **Vue Element Admin**. For detailed usage instructions, please refer to [this documentation](https://vue3-element-admin-site.midfar.com/guide/essentials/router-and-nav.html).
 
 ## Features
 
-- **Latest Technology Stack**: Developed using cutting-edge front-end technologies such as Vue 3 and Vite 3
+- # RDMS 辐射设备管理系统 (Vue3 版本)
+
+这是基于 vue3-element-admin 模板创建的辐射设备管理系统前端项目。
+
+## 技术栈
+
+- Vue 3.5
+- TypeScript
+- Element Plus 2.10
+- Vue Router 4.5
+- Pinia 2.3
+- Vite 构建工具
+
+## 功能模块
+
+1. **首页 (Dashboard)** - 数据统计和概览
+2. **设备信息** - 设备的增删改查管理
+3. **人员信息** - 人员的增删改查管理
+4. **负责人-设备** - 管理人员与设备的关联关系
+5. **文件管理** - 文件上传、下载和管理
+6. **文件查看** - 查看和预览文件内容
+
+## 开发指南
+
+### 环境要求
+
+- Node.js >= 20.x
+- npm >= 9.x
+
+### 安装依赖
+
+```bash
+npm install
+```
+
+### 开发模式
+
+```bash
+# 连接测试服务器
+npm run dev:test
+
+# 连接生产服务器  
+npm run dev:prod
+```
+
+### 构建生产环境
+
+```bash
+# 构建测试环境
+npm run build:test
+
+# 构建生产环境
+npm run build:prod
+```
+
+## 项目结构
+
+```plaintext
+src/
+├── api/              # API 接口
+│   ├── device.ts     # 设备管理 API
+│   ├── person.ts     # 人员管理 API
+│   ├── file.ts       # 文件管理 API
+│   └── user.ts       # 用户管理 API
+├── views/            # 页面组件
+│   ├── device/       # 设备信息页面
+│   ├── person/       # 人员信息页面
+│   ├── file/         # 文件管理页面
+│   ├── person_device/# 负责人-设备关系页面
+│   └── dashboard/    # 仪表盘
+├── router/           # 路由配置
+├── store/            # Pinia 状态管理
+└── layout/           # 布局组件
+```
+
+## 从 Vue2 迁移的改进
+
+1. **性能提升**: Vue 3 提供更好的性能和更小的包体积
+2. **TypeScript 原生支持**: 更好的类型推导和 IDE 支持
+3. **Composition API**: 更灵活的代码组织方式
+4. **更现代的构建工具**: 使用 Vite 替代 Webpack，提供极快的开发体验
+
+## License
+
+MIT License
 - **TypeScript**: A superset of JavaScript designed for application-scale development
 - **Mock Data**: Built-in mock data solution
 - **Permission System**: Comprehensive dynamic route and permission generation

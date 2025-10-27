@@ -1,210 +1,174 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on"
-             label-position="left">
-
-      <div class="title-container">
-        <h3 class="title">Login Form</h3>
-      </div>
-
-      <el-form-item prop="username">
-        <span class="svg-container">
-          <svg-icon icon-class="user" />
-        </span>
-        <el-input ref="username" v-model="loginForm.username" placeholder="Username" name="username" type="text"
-                  tabindex="1" autocomplete="on" />
-      </el-form-item>
-
-      <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
-        <el-form-item prop="password">
-          <span class="svg-container">
-            <svg-icon icon-class="password" />
-          </span>
-          <el-input :key="passwordType" ref="password" v-model="loginForm.password" :type="passwordType"
-                    placeholder="Password" name="password" tabindex="2" autocomplete="on" @keyup="checkCapslock"
-                    @blur="capsTooltip = false" @keyup.enter="handleLogin" />
-          <span class="show-pwd" @click="showPwd">
-            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
-          </span>
-        </el-form-item>
-      </el-tooltip>
-
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.prevent="handleLogin">
-        Login</el-button>
-
-      <div style="position:relative">
-        <div class="tips">
-          <span>Username : admin</span>
-          <span>Password : any</span>
+    <div class="login-box">
+      <div class="logo-section">
+        <div class="logo-container">
+          <img src="@/assets/logo.svg" alt="USTB Logo" class="school-logo" />
+          <h1 class="system-title">辐射设备管理系统</h1>
+          <h2 class="school-name">北京科技大学</h2>
+          <p class="system-desc">Radiation Device Management System</p>
         </div>
-        <div class="tips">
-          <span style="margin-right:18px;">Username : editor</span>
-          <span>Password : any</span>
-        </div>
-
-        <el-button class="thirdparty-button" type="primary" @click="showDialog = true">
-          Or connect with
-        </el-button>
       </div>
-    </el-form>
+      
+      <div class="form-section">
+        <el-form ref="loginFormRef" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on"
+                 label-position="left">
 
-    <el-dialog title="Or connect with" v-model="showDialog">
-      Can not be simulated on local, so please combine you own business simulation! ! !
-      <br>
-      <br>
-      <br>
-      <social-sign />
-    </el-dialog>
+          <div class="title-container">
+            <h3 class="title">用户登录</h3>
+          </div>
+
+          <el-form-item prop="username">
+            <span class="svg-container">
+              <svg-icon icon-class="user" />
+            </span>
+            <el-input ref="usernameRef" v-model="loginForm.username" placeholder="用户名" name="username" type="text"
+                      tabindex="1" autocomplete="on" />
+          </el-form-item>
+
+          <el-tooltip v-model="capsTooltip" content="大写锁定已开启" placement="right" manual>
+            <el-form-item prop="password">
+              <span class="svg-container">
+                <svg-icon icon-class="password" />
+              </span>
+              <el-input :key="passwordType" ref="passwordRef" v-model="loginForm.password" :type="passwordType"
+                        placeholder="密码" name="password" tabindex="2" autocomplete="on" @keyup="checkCapslock"
+                        @blur="capsTooltip = false" @keyup.enter="handleLogin" />
+              <span class="show-pwd" @click="showPwd">
+                <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+              </span>
+            </el-form-item>
+          </el-tooltip>
+
+          <el-button :loading="loading" type="primary" class="login-button" @click.prevent="handleLogin">
+            登录
+          </el-button>
+
+          <div class="tips-container">
+            <span class="tip-text">请使用授权账号登录系统</span>
+          </div>
+        </el-form>
+        
+        <div class="footer-info">
+          <p>© 2025 北京科技大学 辐射设备管理系统</p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
+import { ref, reactive, onMounted, nextTick } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import { validUsername } from '@/utils/validate';
-import { defineComponent } from 'vue';
-import SocialSign from './components/SocialSignin.vue';
-import type { FormItemRule } from 'element-plus';
-import type { IForm } from '@/types/element-plus';
+import type { FormInstance, FormRules } from 'element-plus';
+import { ElMessage } from 'element-plus';
 import store from '@/store';
 
-interface QueryType {
-  // 自定义key 任意字符串
-  [propname:string]:string
-}
+const router = useRouter();
+const route = useRoute();
 
-export default defineComponent({
-  name: 'Login',
-  components: { SocialSign },
-  data() {
-    const validateUsername: FormItemRule['validator'] = (_rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'));
-      } else {
-        callback();
-      }
-    };
-    const validatePassword: FormItemRule['validator'] = (_rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'));
-      } else {
-        callback();
-      }
-    };
-    return {
-      loginForm: {
-        username: 'admin',
-        password: '111111'
-      },
-      loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
-      },
-      passwordType: 'password',
-      capsTooltip: false,
-      loading: false,
-      showDialog: false,
-      redirect: undefined,
-      otherQuery: {}
-    };
-  },
-  watch: {
-    $route: {
-      handler: function(route) {
-        const query = route.query;
-        if (query) {
-          this.redirect = query.redirect;
-          this.otherQuery = this.getOtherQuery(query);
-        }
-      },
-      immediate: true
-    }
-  },
-  created() {
-    // window.addEventListener('storage', this.afterQRScan)
-  },
-  mounted() {
-    if (this.loginForm.username === '') {
-      (this.$refs.username as HTMLElement).focus();
-    } else if (this.loginForm.password === '') {
-      (this.$refs.password as HTMLElement).focus();
-    }
-  },
-  unmounted() {
-    // window.removeEventListener('storage', this.afterQRScan)
-  },
-  methods: {
-    checkCapslock(e) {
-      const { key } = e;
-      this.capsTooltip = key && key.length === 1 && (key >= 'A' && key <= 'Z');
-    },
-    showPwd() {
-      if (this.passwordType === 'password') {
-        this.passwordType = '';
-      } else {
-        this.passwordType = 'password';
-      }
-      this.$nextTick(() => {
-        (this.$refs.password as HTMLElement).focus();
-      });
-    },
-    handleLogin() {
-      (this.$refs.loginForm as IForm).validate(valid => {
-        return new Promise((resolve, reject) => {
-          if (valid) {
-            this.loading = true;
-            store.user().login(this.loginForm)
-              .then(() => {
-                this.$router.push({ path: this.redirect || '/', query: this.otherQuery });
-                this.loading = false;
-              })
-              .catch(() => {
-                this.loading = false;
-              }).finally(() => {
-                resolve();
-              });
-          } else {
-            console.log('error submit!!');
-            reject();
-          }
+const loginFormRef = ref<FormInstance>();
+const usernameRef = ref();
+const passwordRef = ref();
+
+const loginForm = reactive({
+  username: 'admin',
+  password: '111111'
+});
+
+const validateUsername = (_rule: any, value: any, callback: any) => {
+  if (!validUsername(value)) {
+    callback(new Error('请输入正确的用户名'));
+  } else {
+    callback();
+  }
+};
+
+const validatePassword = (_rule: any, value: any, callback: any) => {
+  if (value.length < 6) {
+    callback(new Error('密码长度不能少于6位'));
+  } else {
+    callback();
+  }
+};
+
+const loginRules = reactive<FormRules>({
+  username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+  password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+});
+
+const capsTooltip = ref(false);
+const loading = ref(false);
+const passwordType = ref('password');
+const redirect = ref<string | undefined>(undefined);
+const otherQuery = ref({});
+
+const checkCapslock = (e: KeyboardEvent) => {
+  const { key } = e;
+  capsTooltip.value = key !== undefined && key.length === 1 && ((key >= 'A' && key <= 'Z') || (key >= 'а' && key <= 'я'));
+};
+
+const showPwd = () => {
+  if (passwordType.value === 'password') {
+    passwordType.value = '';
+  } else {
+    passwordType.value = 'password';
+  }
+  nextTick(() => {
+    passwordRef.value.focus();
+  });
+};
+
+const handleLogin = () => {
+  loginFormRef.value?.validate(async (valid: boolean) => {
+    if (valid) {
+      loading.value = true;
+      try {
+        await store.user().login(loginForm);
+        router.push({ path: redirect.value || '/', query: otherQuery.value }).catch(err => {
+          console.warn(err);
         });
-      });
-    },
-    getOtherQuery(query:QueryType) {
-      return Object.keys(query).reduce((acc:QueryType, cur) => {
-        if (cur !== 'redirect') {
-          acc[cur] = query[cur];
-        }
-        return acc;
-      }, {});
+        loading.value = false;
+      } catch (error) {
+        loading.value = false;
+        ElMessage.error('登录失败，请检查用户名和密码');
+      }
+    } else {
+      return false;
     }
-    // afterQRScan() {
-    //   if (e.key === 'x-admin-oauth-code') {
-    //     const code = getQueryObject(e.newValue)
-    //     const codeMap = {
-    //       wechat: 'code',
-    //       tencent: 'code'
-    //     }
-    //     const type = codeMap[this.auth_type]
-    //     const codeName = code[type]
-    //     if (codeName) {
-    //       store.user().LoginByThirdparty(codeName).then(() => {
-    //         this.$router.push({ path: this.redirect || '/' })
-    //       })
-    //     } else {
-    //       alert('第三方登录失败')
-    //     }
-    //   }
-    // }
+  });
+};
+
+const getOtherQuery = (query: any) => {
+  return Object.keys(query).reduce((acc, cur) => {
+    if (cur !== 'redirect') {
+      acc[cur] = query[cur];
+    }
+    return acc;
+  }, {} as any);
+};
+
+onMounted(() => {
+  if (loginForm.username === '') {
+    usernameRef.value.focus();
+  } else if (loginForm.password === '') {
+    passwordRef.value.focus();
   }
 });
+
+// Watch route changes
+if (route.query) {
+  redirect.value = route.query.redirect as string;
+  otherQuery.value = getOtherQuery(route.query);
+}
 </script>
 
-<style lang="scss">
-/* 修复input 背景不协调 和光标变色 */
-/* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
-
+<style lang="scss" scoped>
 $bg: #283443;
 $light_gray: #fff;
 $cursor: #fff;
+$dark_gray: #889aa4;
 
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
   .login-container .el-input input {
@@ -212,9 +176,165 @@ $cursor: #fff;
   }
 }
 
-/* reset element-plus css */
+/* reset element-ui css */
 .login-container {
   .el-input {
+    display: inline-block;
+    height: 47px;
+    width: 85%;
+
+    :deep(input) {
+      background: transparent;
+      border: 0px;
+      -webkit-appearance: none;
+      border-radius: 0px;
+      padding: 12px 5px 12px 15px;
+      color: $light_gray;
+      height: 47px;
+      caret-color: $cursor;
+
+      &:-webkit-autofill {
+        box-shadow: 0 0 0px 1000px $bg inset !important;
+        -webkit-text-fill-color: $cursor !important;
+      }
+    }
+  }
+
+  .el-form-item {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    color: #454545;
+  }
+}
+
+.login-container {
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  .login-box {
+    display: flex;
+    width: 900px;
+    height: 500px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    
+    .logo-section {
+      flex: 1;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      
+      .logo-container {
+        text-align: center;
+        color: white;
+        
+        .school-logo {
+          width: 120px;
+          height: 120px;
+          margin-bottom: 20px;
+          background: white;
+          border-radius: 50%;
+          padding: 10px;
+        }
+        
+        .system-title {
+          font-size: 28px;
+          font-weight: bold;
+          margin-bottom: 10px;
+          text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .school-name {
+          font-size: 20px;
+          margin-bottom: 10px;
+          font-weight: 500;
+        }
+        
+        .system-desc {
+          font-size: 14px;
+          opacity: 0.9;
+          font-style: italic;
+        }
+      }
+    }
+    
+    .form-section {
+      flex: 1;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      
+      .login-form {
+        .title-container {
+          text-align: center;
+          margin-bottom: 30px;
+          
+          .title {
+            font-size: 26px;
+            color: #333;
+            font-weight: 600;
+            margin: 0;
+          }
+        }
+        
+        .svg-container {
+          padding: 6px 5px 6px 15px;
+          color: $dark_gray;
+          vertical-align: middle;
+          width: 30px;
+          display: inline-block;
+        }
+        
+        .show-pwd {
+          position: absolute;
+          right: 10px;
+          top: 7px;
+          font-size: 16px;
+          color: $dark_gray;
+          cursor: pointer;
+          user-select: none;
+        }
+        
+        .login-button {
+          width: 100%;
+          margin-top: 20px;
+          margin-bottom: 20px;
+          height: 47px;
+          font-size: 16px;
+        }
+        
+        .tips-container {
+          text-align: center;
+          
+          .tip-text {
+            font-size: 14px;
+            color: #666;
+          }
+        }
+      }
+      
+      .footer-info {
+        text-align: center;
+        font-size: 12px;
+        color: #999;
+        margin-top: 20px;
+      }
+    }
+  }
+}
+</style>
+
     height: 47px;
     width: 85%;
 
