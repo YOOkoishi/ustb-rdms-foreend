@@ -170,44 +170,6 @@ $light_gray: #fff;
 $cursor: #fff;
 $dark_gray: #889aa4;
 
-@supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
-  .login-container .el-input input {
-    color: $cursor;
-  }
-}
-
-/* reset element-ui css */
-.login-container {
-  .el-input {
-    display: inline-block;
-    height: 47px;
-    width: 85%;
-
-    :deep(input) {
-      background: transparent;
-      border: 0px;
-      -webkit-appearance: none;
-      border-radius: 0px;
-      padding: 12px 5px 12px 15px;
-      color: $light_gray;
-      height: 47px;
-      caret-color: $cursor;
-
-      &:-webkit-autofill {
-        box-shadow: 0 0 0px 1000px $bg inset !important;
-        -webkit-text-fill-color: $cursor !important;
-      }
-    }
-  }
-
-  .el-form-item {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    color: #454545;
-  }
-}
-
 .login-container {
   min-height: 100vh;
   width: 100%;
@@ -269,11 +231,12 @@ $dark_gray: #889aa4;
     }
     
     .form-section {
-      flex: 1;
+      flex: 1.5;
       padding: 40px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      background: white;
       
       .login-form {
         .title-container {
@@ -288,12 +251,36 @@ $dark_gray: #889aa4;
           }
         }
         
+        .el-form-item {
+          border: 1px solid #dcdfe6;
+          background: #f5f7fa;
+          border-radius: 5px;
+          margin-bottom: 22px;
+        }
+        
         .svg-container {
           padding: 6px 5px 6px 15px;
           color: $dark_gray;
           vertical-align: middle;
           width: 30px;
           display: inline-block;
+        }
+        
+        :deep(.el-input) {
+          display: inline-block;
+          height: 47px;
+          width: 85%;
+
+          input {
+            background: transparent;
+            border: 0;
+            -webkit-appearance: none;
+            border-radius: 0;
+            padding: 12px 5px 12px 15px;
+            color: #333;
+            height: 47px;
+            caret-color: #409eff;
+          }
         }
         
         .show-pwd {
@@ -308,7 +295,7 @@ $dark_gray: #889aa4;
         
         .login-button {
           width: 100%;
-          margin-top: 20px;
+          margin-top: 10px;
           margin-bottom: 20px;
           height: 47px;
           font-size: 16px;
@@ -332,115 +319,22 @@ $dark_gray: #889aa4;
       }
     }
   }
-}
-</style>
-
-    height: 47px;
-    width: 85%;
-
-    .el-input__wrapper,
-    input {
-      background: transparent;
-      border: 0px;
-      -webkit-appearance: none;
-      border-radius: 0px;
-      box-shadow: none;
-    }
-
-    input {
-      padding: 12px 5px 12px 15px;
-      color: $light_gray;
-      height: 47px;
-      caret-color: $cursor;
-
-      &:-webkit-autofill {
-        box-shadow: 0 0 0px 1000px $bg inset !important;
-        -webkit-text-fill-color: $cursor  !important;
+  
+  @media only screen and (max-width: 1024px) {
+    .login-box {
+      width: 90%;
+      flex-direction: column;
+      height: auto;
+      
+      .logo-section {
+        padding: 30px;
+      }
+      
+      .form-section {
+        padding: 30px;
       }
     }
   }
-
-  .el-form-item {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    color: #454545;
-  }
 }
 </style>
 
-<style lang="scss" scoped>
-$bg: #2d3a4b;
-$dark_gray: #889aa4;
-$light_gray: #eee;
-
-.login-container {
-  min-height: 100%;
-  width: 100%;
-  background-color: $bg;
-  overflow: hidden;
-
-  .login-form {
-    position: relative;
-    width: 520px;
-    max-width: 100%;
-    padding: 160px 35px 0;
-    margin: 0 auto;
-    overflow: hidden;
-  }
-
-  .tips {
-    font-size: 14px;
-    color: #fff;
-    margin-bottom: 10px;
-
-    span {
-      &:first-of-type {
-        margin-right: 16px;
-      }
-    }
-  }
-
-  .svg-container {
-    padding: 6px 5px 6px 15px;
-    color: $dark_gray;
-    vertical-align: middle;
-    width: 30px;
-    display: inline-block;
-  }
-
-  .title-container {
-    position: relative;
-
-    .title {
-      font-size: 26px;
-      color: $light_gray;
-      margin: 0px auto 40px auto;
-      text-align: center;
-      font-weight: bold;
-    }
-  }
-
-  .show-pwd {
-    position: absolute;
-    right: 10px;
-    top: 7px;
-    font-size: 16px;
-    color: $dark_gray;
-    cursor: pointer;
-    user-select: none;
-  }
-
-  .thirdparty-button {
-    position: absolute;
-    right: 0;
-    bottom: 6px;
-  }
-
-  @media only screen and (max-width: 470px) {
-    .thirdparty-button {
-      display: none;
-    }
-  }
-}
-</style>

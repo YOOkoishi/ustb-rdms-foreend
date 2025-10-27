@@ -34,12 +34,6 @@
             <router-link to="/">
               <el-dropdown-item>首页</el-dropdown-item>
             </router-link>
-            <a target="_blank" href="https://github.com/midfar/vue3-element-admin">
-              <el-dropdown-item>项目地址</el-dropdown-item>
-            </a>
-            <a target="_blank" href="https://vue3-element-admin-site.midfar.com/">
-              <el-dropdown-item>文档地址</el-dropdown-item>
-            </a>
             <el-dropdown-item divided @click="logout">
               <span style="display:block;">退出登录</span>
             </el-dropdown-item>

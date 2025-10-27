@@ -26,7 +26,7 @@ export default defineComponent({
   },
   data() {
     return {
-      title: 'Vue3 Element Admin',
+      title: 'RDMS 辐射设备管理系统',
       logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
     };
   }
