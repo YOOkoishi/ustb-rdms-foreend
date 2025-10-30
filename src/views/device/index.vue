@@ -108,6 +108,7 @@
 import { ref, reactive, onMounted } from 'vue';
 import { getDeviceList, addDevice, updateDevice, deleteDevice, type DeviceInfo } from '@/api/device';
 import { ElMessage, ElMessageBox } from 'element-plus';
+import { export_json_to_excel } from '@/vendor/Export2Excel';
 
 const list = ref<DeviceInfo[]>([]);
 const total = ref(0);
@@ -251,7 +252,21 @@ const handleSelectionChange = (val: any) => {
 };
 
 const handleDownload = () => {
-  ElMessage.info('导出功能待实现');
+  const header = ['设备号', '设备名称', '设备型号', '负责人', '场所名称', '场所地址', '备注'];
+  const data = list.value.map(item => [
+    item.device_idx,
+    item.device_name,
+    item.device_type,
+    item.device_manager_idx ? item.device_manager_idx.join(',') : '',
+    item.location_name,
+    item.location_address,
+    item.device_remark || ''
+  ]);
+  export_json_to_excel({
+    header,
+    data,
+    filename: '设备信息导出.xlsx'
+  });
 };
 </script>
 

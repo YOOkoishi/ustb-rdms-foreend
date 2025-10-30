@@ -277,10 +277,12 @@ onMounted(() => {
       .banner-card {
         background: url('/USTB.jpg') no-repeat center center / cover;
         border: none;
-        color: white;
+        color: #333;
         height: 200px;
         display: flex;
-        align-items: center;      :deep(.el-card__body) {
+        align-items: center;
+        background-color: rgba(0, 0, 0, 0.3);
+        background-blend-mode: multiply;      :deep(.el-card__body) {
         padding: 30px;
       }
 
@@ -293,17 +295,23 @@ onMounted(() => {
           h1 {
             font-size: 28px;
             margin: 0 0 10px 0;
+            color: #000;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
           }
 
           p {
             font-size: 16px;
             margin: 5px 0;
-            opacity: 0.9;
+            opacity: 1;
+            color: #000;
+            text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.3);
           }
 
           .welcome-time {
             font-size: 14px;
             margin-top: 15px;
+            color: #000;
           }
         }
 

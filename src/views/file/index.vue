@@ -4,6 +4,9 @@
       <el-button class="filter-item" type="primary" @click="handleCreate">
         添加文件
       </el-button>
+      <el-button class="filter-item" type="success" @click="handleExport">
+        导出
+      </el-button>
     </div>
 
     <el-table
@@ -96,6 +99,7 @@
 import { ref, reactive, onMounted } from 'vue';
 import { getFileList, addFile, updateFile, deleteFile, downloadFile, type FileInfo } from '@/api/file';
 import { ElMessage, ElMessageBox } from 'element-plus';
+import { export_json_to_excel } from '@/vendor/Export2Excel';
 
 const list = ref<FileInfo[]>([]);
 const total = ref(0);
@@ -233,6 +237,23 @@ const handleDownload = async (row: any) => {
   } catch (error) {
     ElMessage.error('下载失败');
   }
+};
+
+const handleExport = () => {
+  const header = ['文件编号', '文件名', '文件类型', '文件大小(KB)', '所属设备', '备注'];
+  const data = list.value.map(item => [
+    item.file_idx,
+    item.file_name,
+    item.file_type,
+    item.file_size ? Math.round(item.file_size / 1024) : 0,
+    item.file_ownership_idx || '',
+    item.file_remark || ''
+  ]);
+  export_json_to_excel({
+    header,
+    data,
+    filename: '文件列表导出.xlsx'
+  });
 };
 </script>
 

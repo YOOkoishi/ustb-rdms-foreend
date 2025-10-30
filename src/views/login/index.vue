@@ -173,7 +173,10 @@ $dark_gray: #889aa4;
 .login-container {
   min-height: 100vh;
   width: 100%;
-  background: url('@/../../public/USTB.jpg') no-repeat center center / cover;
+  background-image: url('/USTB.jpg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -182,7 +185,7 @@ $dark_gray: #889aa4;
   .login-box {
     display: flex;
     width: 900px;
-    height: 500px;
+    height: 550px;
     background: white;
     border-radius: 10px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
@@ -256,6 +259,10 @@ $dark_gray: #889aa4;
           background: #f5f7fa;
           border-radius: 5px;
           margin-bottom: 22px;
+          position: relative;
+          height: 47px;
+          display: flex;
+          align-items: center;
         }
         
         .svg-container {
@@ -263,30 +270,37 @@ $dark_gray: #889aa4;
           color: $dark_gray;
           vertical-align: middle;
           width: 30px;
-          display: inline-block;
+          display: inline-flex;
+          align-items: center;
+          flex-shrink: 0;
         }
         
         :deep(.el-input) {
-          display: inline-block;
-          height: 47px;
-          width: 85%;
+          display: flex;
+          align-items: center;
+          flex: 1;
+          height: 100%;
 
           input {
             background: transparent;
             border: 0;
+            appearance: none;
             -webkit-appearance: none;
             border-radius: 0;
-            padding: 12px 5px 12px 15px;
+            padding: 12px 5px 12px 5px;
             color: #333;
-            height: 47px;
+            height: 100%;
+            font-size: 14px;
+            width: 100%;
             caret-color: #409eff;
           }
         }
         
         .show-pwd {
           position: absolute;
-          right: 10px;
-          top: 7px;
+          right: 15px;
+          top: 50%;
+          transform: translateY(-50%);
           font-size: 16px;
           color: $dark_gray;
           cursor: pointer;

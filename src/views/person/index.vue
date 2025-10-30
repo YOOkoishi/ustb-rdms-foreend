@@ -8,6 +8,9 @@
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" @click="handleCreate">
         添加
       </el-button>
+      <el-button class="filter-item" type="success" @click="handleDownload">
+        导出
+      </el-button>
     </div>
 
     <el-table
@@ -92,6 +95,7 @@
 import { ref, reactive, onMounted } from 'vue';
 import { getPersonList, addPerson, updatePerson, deletePerson, type PersonInfo } from '@/api/person';
 import { ElMessage, ElMessageBox } from 'element-plus';
+import { export_json_to_excel } from '@/vendor/Export2Excel';
 
 const list = ref<PersonInfo[]>([]);
 const total = ref(0);
@@ -206,6 +210,23 @@ const handleDelete = (row: any) => {
     getList();
   }).catch(() => {
     ElMessage.info('已取消删除');
+  });
+};
+
+const handleDownload = () => {
+  const header = ['编号', '姓名', '电话', '邮箱', '部门', '备注'];
+  const data = list.value.map(item => [
+    item.person_idx,
+    item.person_name,
+    item.person_phone,
+    item.person_email,
+    item.person_department,
+    item.person_remark || ''
+  ]);
+  export_json_to_excel({
+    header,
+    data,
+    filename: '人员信息导出.xlsx'
   });
 };
 </script>
