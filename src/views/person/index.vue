@@ -223,7 +223,7 @@ const handleDownload = () => {
     item.person_department,
     item.person_remark || ''
   ]);
-  export_json_to_excel({
+  (export_json_to_excel as any)({
     header,
     data,
     filename: '人员信息导出.xlsx'

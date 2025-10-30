@@ -9,9 +9,6 @@
             <p>北京科技大学 - Radiation Device Management System</p>
             <p class="welcome-time">{{ currentTime }}</p>
           </div>
-          <div class="banner-image">
-            <img src="/University_of_Science_and_Technology_Beijing_logo.svg.png" alt="系统Logo" />
-          </div>
         </div>
       </el-card>
     </div>
@@ -166,6 +163,9 @@ import {
   View,
   Download
 } from '@element-plus/icons-vue';
+import { getDeviceList } from '@/api/device';
+import { getPersonList, getResponsibleDevice } from '@/api/person';
+import { getFileList } from '@/api/file';
 
 const router = useRouter();
 
@@ -234,12 +234,25 @@ const updateTime = () => {
 };
 
 const loadStats = async () => {
-  // TODO: 从API加载实际统计数据
-  // 这里先使用模拟数据
-  stats.deviceCount = 45;
-  stats.personCount = 28;
-  stats.fileCount = 156;
-  stats.relationCount = 89;
+  try {
+    // 从 API 加载实际数据
+    const deviceRes = await getDeviceList();
+    const personRes = await getPersonList();
+    const fileRes = await getFileList();
+    const relationRes = await getResponsibleDevice();
+    
+    stats.deviceCount = deviceRes.data?.length || 0;
+    stats.personCount = personRes.data?.length || 0;
+    stats.fileCount = fileRes.data?.length || 0;
+    stats.relationCount = relationRes.data?.length || 0;
+  } catch (error) {
+    console.error('加载统计数据失败:', error);
+    // 降级到默认数据
+    stats.deviceCount = 0;
+    stats.personCount = 0;
+    stats.fileCount = 0;
+    stats.relationCount = 0;
+  }
 };
 
 const goToPage = (path: string) => {
@@ -288,41 +301,34 @@ onMounted(() => {
 
       .banner-content {
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
 
         .banner-text {
           h1 {
-            font-size: 28px;
+            font-size: 32px;
             margin: 0 0 10px 0;
-            color: #000;
+            color: rgb(255, 255, 255);
             font-weight: bold;
             text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+            -webkit-text-stroke: 0.2px rgb(204, 255, 0);
           }
 
           p {
             font-size: 16px;
             margin: 5px 0;
             opacity: 1;
-            color: #000;
+            color: #ffffff;
             text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.3);
+            -webkit-text-stroke: 0.1px rgb(204, 255, 0);
           }
 
           .welcome-time {
             font-size: 14px;
             margin-top: 15px;
-            color: #000;
+            color: #ffffff;
           }
-        }
 
-        .banner-image {
-          img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: white;
-            padding: 10px;
-          }
         }
       }
     }

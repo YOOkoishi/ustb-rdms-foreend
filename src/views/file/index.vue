@@ -249,7 +249,7 @@ const handleExport = () => {
     item.file_ownership_idx || '',
     item.file_remark || ''
   ]);
-  export_json_to_excel({
+  (export_json_to_excel as any)({
     header,
     data,
     filename: '文件列表导出.xlsx'

@@ -76,12 +76,14 @@
 import { ref, reactive, onMounted } from 'vue';
 import { getRelationList, addRelation, deleteRelation } from '@/api/person_device';
 import { getPersonList } from '@/api/person';
+import type { PersonInfo } from '@/api/person';
 import { getDeviceList } from '@/api/device';
+import type { DeviceInfo } from '@/api/device';
 import { ElMessage, ElMessageBox } from 'element-plus';
 
 const list = ref([]);
-const personList = ref([]);
-const deviceList = ref([]);
+const personList = ref<PersonInfo[]>([]);
+const deviceList = ref<DeviceInfo[]>([]);
 const listLoading = ref(false);
 const dialogFormVisible = ref(false);
 

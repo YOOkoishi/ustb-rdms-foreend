@@ -262,7 +262,7 @@ const handleDownload = () => {
     item.location_address,
     item.device_remark || ''
   ]);
-  export_json_to_excel({
+  (export_json_to_excel as any)({
     header,
     data,
     filename: '设备信息导出.xlsx'

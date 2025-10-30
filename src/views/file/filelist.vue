@@ -40,10 +40,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { getFileList } from '@/api/file';
+import type { FileInfo } from '@/api/file';
 import { ElMessage } from 'element-plus';
 import { export_json_to_excel } from '@/vendor/Export2Excel';
 
-const fileList = ref([]);
+const fileList = ref<FileInfo[]>([]);
 const viewDialogVisible = ref(false);
 const currentFile = ref({
   file_name: '',
@@ -95,7 +96,7 @@ const handleExport = () => {
     item.file_size ? Math.round(item.file_size / 1024) : 0,
     item.file_ownership_idx || ''
   ]);
-  export_json_to_excel({
+  (export_json_to_excel as any)({
     header,
     data,
     filename: '文件列表导出.xlsx'

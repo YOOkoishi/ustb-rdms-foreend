@@ -10,7 +10,8 @@
         </div>
       </div>
       
-      <div class="form-section">
+      <div class="form-wrapper">
+        <div class="form-section">
         <el-form ref="loginFormRef" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on"
                  label-position="left">
 
@@ -51,6 +52,7 @@
         
         <div class="footer-info">
           <p>© 2025 北京科技大学 辐射设备管理系统</p>
+        </div>
         </div>
       </div>
     </div>
@@ -134,8 +136,6 @@ const handleLogin = () => {
         loading.value = false;
         ElMessage.error('登录失败，请检查用户名和密码');
       }
-    } else {
-      return false;
     }
   });
 };
@@ -180,53 +180,55 @@ $dark_gray: #889aa4;
   overflow: hidden;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
+  padding-right: 60px;
   
   .login-box {
     display: flex;
-    width: 900px;
-    height: 550px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    width: 650px;
+    height: 420px;
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: 12px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
     overflow: hidden;
+    backdrop-filter: blur(10px);
     
     .logo-section {
-      flex: 1;
-      background: rgba(255, 255, 255, 0.1);
+      flex: 0.9;
+      background: linear-gradient(135deg, rgba(40, 52, 67, 0.8), rgba(60, 80, 100, 0.8));
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 40px;
+      padding: 30px 25px;
       
       .logo-container {
         text-align: center;
         color: white;
         
         .school-logo {
-          width: 120px;
-          height: 120px;
-          margin-bottom: 20px;
+          width: 100px;
+          height: 100px;
+          margin-bottom: 15px;
           background: white;
           border-radius: 50%;
-          padding: 10px;
+          padding: 8px;
         }
         
         .system-title {
-          font-size: 28px;
+          font-size: 22px;
           font-weight: bold;
-          margin-bottom: 10px;
-          text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+          margin-bottom: 8px;
+          text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
         
         .school-name {
-          font-size: 20px;
-          margin-bottom: 10px;
+          font-size: 16px;
+          margin-bottom: 6px;
           font-weight: 500;
         }
         
         .system-desc {
-          font-size: 14px;
+          font-size: 12px;
           opacity: 0.9;
           font-style: italic;
         }
@@ -234,8 +236,8 @@ $dark_gray: #889aa4;
     }
     
     .form-section {
-      flex: 1.5;
-      padding: 40px;
+      flex: 1.2;
+      padding: 35px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -335,13 +337,17 @@ $dark_gray: #889aa4;
   }
   
   @media only screen and (max-width: 1024px) {
+    justify-content: center;
+    padding-right: 20px;
+    
     .login-box {
-      width: 90%;
+      width: 85%;
+      max-width: 600px;
       flex-direction: column;
       height: auto;
       
       .logo-section {
-        padding: 30px;
+        padding: 25px;
       }
       
       .form-section {
