@@ -10,7 +10,7 @@
             <p class="welcome-time">{{ currentTime }}</p>
           </div>
           <div class="banner-image">
-            <img src="@/assets/logo.svg" alt="系统Logo" />
+            <img src="/University_of_Science_and_Technology_Beijing_logo.svg.png" alt="系统Logo" />
           </div>
         </div>
       </el-card>
@@ -271,15 +271,16 @@ onMounted(() => {
   background: #f0f2f5;
   min-height: calc(100vh - 84px);
 
-  .welcome-banner {
-    margin-bottom: 20px;
+    .welcome-banner {
+      margin-bottom: 20px;
 
-    .banner-card {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border: none;
-      color: white;
-
-      :deep(.el-card__body) {
+      .banner-card {
+        background: url('/USTB.jpg') no-repeat center center / cover;
+        border: none;
+        color: white;
+        height: 200px;
+        display: flex;
+        align-items: center;      :deep(.el-card__body) {
         padding: 30px;
       }
 

@@ -3,7 +3,7 @@
     <div class="login-box">
       <div class="logo-section">
         <div class="logo-container">
-          <img src="@/assets/logo.svg" alt="USTB Logo" class="school-logo" />
+          <img src="/University_of_Science_and_Technology_Beijing_logo.svg.png" alt="USTB Logo" class="school-logo" />
           <h1 class="system-title">辐射设备管理系统</h1>
           <h2 class="school-name">北京科技大学</h2>
           <p class="system-desc">Radiation Device Management System</p>
@@ -173,7 +173,7 @@ $dark_gray: #889aa4;
 .login-container {
   min-height: 100vh;
   width: 100%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: url('@/../../public/USTB.jpg') no-repeat center center / cover;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -190,7 +190,7 @@ $dark_gray: #889aa4;
     
     .logo-section {
       flex: 1;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: rgba(255, 255, 255, 0.1);
       display: flex;
       align-items: center;
       justify-content: center;

@@ -74,7 +74,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue';
-import { getResponsibleDevice } from '@/api/device';
+import { getRelationList, addRelation, deleteRelation } from '@/api/person_device';
 import { getPersonList } from '@/api/person';
 import { getDeviceList } from '@/api/device';
 import { ElMessage, ElMessageBox } from 'element-plus';
@@ -99,7 +99,7 @@ onMounted(() => {
 const getList = async () => {
   listLoading.value = true;
   try {
-    const { data } = await getResponsibleDevice();
+    const { data } = await getRelationList();
     list.value = data;
   } catch (error) {
     ElMessage.error('获取关系列表失败');
@@ -134,7 +134,10 @@ const handleCreate = () => {
 
 const createData = async () => {
   try {
-    // 这里需要实现添加关系的 API
+    await addRelation({
+      person_idx: temp.person_id,
+      device_idx: temp.device_id
+    });
     ElMessage.success('创建成功');
     dialogFormVisible.value = false;
     getList();
@@ -149,7 +152,7 @@ const handleDelete = (row: any) => {
     cancelButtonText: '取消',
     type: 'warning'
   }).then(async () => {
-    // 这里需要实现删除关系的 API
+    await deleteRelation(row.row?.id || row.id);
     ElMessage.success('删除成功');
     getList();
   }).catch(() => {
